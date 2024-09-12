@@ -6,7 +6,6 @@ Exercises:
 2. Decrease the number of tiles to a 4x4 grid.
 3. Detect when all tiles are revealed.
 4. Center single-digit tile.
-5. Use letters instead of tiles.
 """
 
 from random import *
@@ -15,7 +14,8 @@ from turtle import *
 from freegames import path
 
 car = path('car.gif')
-tiles = list(range(32)) * 2
+"""Dibuja caracteres en lugar de números"""
+letters = [chr(65 + i) for i in range(32)] * 2
 state = {'mark': None}
 hide = [True] * 64
 
@@ -48,7 +48,7 @@ def tap(x, y):
     spot = index(x, y)
     mark = state['mark']
 
-    if mark is None or mark == spot or tiles[mark] != tiles[spot]:
+    if mark is None or mark == spot or letters[mark] != letters[spot]:
         state['mark'] = spot
     else:
         hide[spot] = False
@@ -75,13 +75,13 @@ def draw():
         up()
         goto(x + 2, y)
         color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal'))
+        write(letters[mark], font=('Arial', 30, 'normal'))
 
     update()
     ontimer(draw, 100)
 
 
-shuffle(tiles)
+shuffle(letters)
 setup(420, 420, 370, 0)
 addshape(car)
 hideturtle()
