@@ -18,6 +18,8 @@ car = path('car.gif')
 letters = [chr(65 + i) for i in range(32)] * 2
 state = {'mark': None}
 hide = [True] * 64
+count = 0
+matched_tiles = 0
 
 
 def square(x, y):
@@ -47,13 +49,25 @@ def tap(x, y):
     """Update mark and hidden tiles based on tap."""
     spot = index(x, y)
     mark = state['mark']
+    global matched_tiles
+    global count
 
     if mark is None or mark == spot or letters[mark] != letters[spot]:
         state['mark'] = spot
+        count += 1
     else:
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
+        count = 0
+        matched_tiles += 2
+        print(matched_tiles)
+
+    print("Clicks desde la útlima coincidencia", count)
+
+    if matched_tiles == 64:
+        print("Encontraste todos los pares")
+        return
 
 
 def draw():
@@ -73,9 +87,9 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
+        goto(x + 27, y)
         color('black')
-        write(letters[mark], font=('Arial', 30, 'normal'))
+        write(letters[mark], False, align="center", font=('Arial', 30, 'normal'))
 
     update()
     ontimer(draw, 100)
